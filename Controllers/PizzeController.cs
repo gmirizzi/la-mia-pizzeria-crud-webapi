@@ -15,7 +15,6 @@ namespace la_mia_pizzeria_static.Controllers
             }
         }
 
-        [Route("/menu")]
         public IActionResult Details(int id)
         {
             using (PizzeriaContext db = new PizzeriaContext())
