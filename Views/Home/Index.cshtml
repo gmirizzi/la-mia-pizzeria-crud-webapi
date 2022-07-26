@@ -1,7 +1,32 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+<div class="container text-center">
+	<h1 class="display-4">Welcome</h1>
+	<div class="row row-cols-3 gy-3"></div>
 </div>
+<script>
+	axios.get("/api/pizzas/getpizzas")
+		.then(function(res) {
+			const arrPizzas = res.data;
+            console.log(arrPizzas);
+			const row = document.querySelector('.row');
+            arrPizzas.forEach((pizza) => {
+                const newCol = document.createElement("div");
+				newCol.classList.add("col");
+                newCol.innerHTML =
+                    `<div class="card h-100">
+						<div class="card-body">
+							<a href="@Url.Action("details","pizze", new {id = "${pizza.pizzaId}"})">
+								<h5 class="card-title">${pizza.name}</h5>
+							</a>
+							<p class="card-text">${pizza.description}</p>
+						</div>
+						<img src="${pizza.imgPath}" class="card-img-top" alt="pizza">
+						<div class="card-text">${pizza.price}</div>
+					</div>`;
+                row.append(newCol);
+            });
+		});
+</script>
