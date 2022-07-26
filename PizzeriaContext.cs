@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using la_mia_pizzeria_static.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
-public class PizzeriaContext : DbContext
+public class PizzeriaContext : IdentityDbContext<IdentityUser>
 {
     public DbSet<Pizza> Pizzas { get; set; }
     public DbSet<Location> Locations { get; set; }
