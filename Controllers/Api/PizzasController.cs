@@ -36,5 +36,23 @@ namespace la_mia_pizzeria_static.Controllers.Api
                 return Ok(pizza);
             }
         }
+
+        [HttpPost]
+        public IActionResult PostMessage([FromBody] Message message)
+        {
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+            else
+            {
+                using (PizzeriaContext db = new PizzeriaContext())
+                {
+                    db.Messages.Add(message);
+                    db.SaveChanges();
+                    return Ok();
+                }
+            }
+        }
     }
 }
