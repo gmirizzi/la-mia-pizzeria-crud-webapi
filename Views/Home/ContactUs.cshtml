@@ -1,0 +1,40 @@
+﻿@{
+	ViewData["Title"] = "Contattaci";
+}
+
+@model Message
+
+<div class="container">
+	<h1 class="mb-3">Contattaci</h1>
+	<form>
+		<div class="mb-3">
+			<label for="name" class="form-label">Nome</label>
+			<input type="text" class="form-control" id="name">
+			<span asp-validation-for="Name" class="text-danger"></span>
+		</div>
+		<div class="mb-3">
+			<label for="oggetto" class="form-label">Oggetto</label>
+			<input type="text" class="form-control" id="oggetto">
+			<span asp-validation-for="Oggetto" class="text-danger"></span>
+		</div>
+		<div class="mb-3">
+			<label for="message-text" class="form-label">Testo</label>
+			<textarea id="message-text" class="form-control"></textarea>
+			<span asp-validation-for="Text" class="text-danger"></span>
+		</div>
+		<div class="mb-3">
+			<label for="mail" class="form-label">E-Mail</label>
+			<input type="email" class="form-control" id="mail">
+			<span asp-validation-for="Email" class="text-danger"></span>
+		</div>
+		<button type="submit" class="btn btn-primary" onclick="send()">Send</button>
+	</form>
+</div>
+<script>
+	function send() {
+        axios.post("api/Messages/PostMessage", {
+            Name: document.getElementById("name"),
+
+		});
+	}
+</script>
