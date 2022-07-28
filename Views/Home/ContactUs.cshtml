@@ -2,39 +2,45 @@
 	ViewData["Title"] = "Contattaci";
 }
 
-@model Message
-
 <div class="container">
 	<h1 class="mb-3">Contattaci</h1>
-	<form>
+	<form onsubmit="send(event)">
 		<div class="mb-3">
 			<label for="name" class="form-label">Nome</label>
 			<input type="text" class="form-control" id="name">
-			<span asp-validation-for="Name" class="text-danger"></span>
 		</div>
 		<div class="mb-3">
 			<label for="oggetto" class="form-label">Oggetto</label>
 			<input type="text" class="form-control" id="oggetto">
-			<span asp-validation-for="Oggetto" class="text-danger"></span>
 		</div>
 		<div class="mb-3">
 			<label for="message-text" class="form-label">Testo</label>
 			<textarea id="message-text" class="form-control"></textarea>
-			<span asp-validation-for="Text" class="text-danger"></span>
 		</div>
 		<div class="mb-3">
 			<label for="mail" class="form-label">E-Mail</label>
 			<input type="email" class="form-control" id="mail">
-			<span asp-validation-for="Email" class="text-danger"></span>
 		</div>
-		<button type="submit" class="btn btn-primary" onclick="send()">Send</button>
+		<button type="submit" class="btn btn-primary">Send</button>
 	</form>
 </div>
-<script>
-	function send() {
-        axios.post("api/Messages/PostMessage", {
-            Name: document.getElementById("name"),
 
-		});
+<script>
+	function send(e) {
+        e.preventDefault();
+		axios.post("/api/messages/postmessage", {
+			Name: document.getElementById("name").value,
+			Oggetto: document.getElementById("oggetto").value,
+			Text: document.getElementById("message-text").value,
+			Email: document.getElementById("mail").value,
+		})
+			.then(function(res) {
+                document.getElementById("name").value = "";
+                document.getElementById("oggetto").value = "";
+                document.getElementById("message-text").value = "";
+                document.getElementById("mail").value = "";
+
+                alert("Messaggio inviato");
+			});
 	}
 </script>
