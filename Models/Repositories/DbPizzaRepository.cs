@@ -40,5 +40,14 @@ namespace la_mia_pizzeria_static.Models.Repositories
                 return pizzas.ToList();
             }
         }
+
+        public void Update(Pizza pizza)
+        {
+            using (PizzeriaContext context = new PizzeriaContext())
+            {
+                context.Update(pizza);
+                context.SaveChanges();
+            }
+        }
     }
 }
