@@ -1,4 +1,6 @@
-﻿namespace la_mia_pizzeria_static.Models.Repositories
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace la_mia_pizzeria_static.Models.Repositories
 {
     public class DbPizzaRepository
     {
@@ -17,6 +19,16 @@
             {
                 context.Pizzas.Remove(pizza);
                 context.SaveChanges();
+            }
+        }
+
+        public Pizza GetById(int id)
+        {
+            using (PizzeriaContext context = new PizzeriaContext())
+            {
+                Pizza pizzaFound = context.Pizzas.Where(p => p.PizzaId == id).Include(p =>
+                p.Category).Include(p => p.IngredientsList).FirstOrDefault();
+                return pizzaFound;
             }
         }
     }
