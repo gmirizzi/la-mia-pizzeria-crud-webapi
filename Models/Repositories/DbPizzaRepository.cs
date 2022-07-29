@@ -10,5 +10,14 @@
                 context.SaveChanges();
             }
         }
+
+        public void Delete(Pizza pizza)
+        {
+            using (PizzeriaContext context = new PizzeriaContext())
+            {
+                context.Pizzas.Remove(pizza);
+                context.SaveChanges();
+            }
+        }
     }
 }
