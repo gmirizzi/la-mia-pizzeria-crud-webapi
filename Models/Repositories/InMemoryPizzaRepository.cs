@@ -1,6 +1,8 @@
-﻿namespace la_mia_pizzeria_static.Models.Repositories
+﻿using la_mia_pizzeria_static.Models.Repositories.Interfaces;
+
+namespace la_mia_pizzeria_static.Models.Repositories
 {
-    public class InMemoryPizzaRepository
+    public class InMemoryPizzaRepository : IPizzaRepository
     {
         private static List<Pizza> Pizzas = new List<Pizza>();
 
@@ -61,6 +63,17 @@
             {
                 InMemoryPizzaRepository.Pizzas[indicePizzaDaTrovare] = pizza;
             }
+        }
+
+        public List<Pizza> GetListByFilter(string search)
+        {
+            List<Pizza> pizzas = InMemoryPizzaRepository.Pizzas;
+            if (search != null)
+            {
+                pizzas = pizzas.Where(pizza =>
+                pizza.Name.ToLower().Contains(search.ToLower())).ToList();
+            }
+            return pizzas.ToList();
         }
     }
 }

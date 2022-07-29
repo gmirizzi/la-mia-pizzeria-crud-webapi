@@ -1,16 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using la_mia_pizzeria_static.Models.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace la_mia_pizzeria_static.Models.Repositories
 {
-    public class DbPizzaRepository
+    public class DbPizzaRepository : IPizzaRepository
     {
-        public void Create(Pizza pizza)
+        private PizzeriaContext context;
+
+        public DbPizzaRepository(PizzeriaContext context)
+         {
+            this.context = context;
+        }
+
+       public void Create(Pizza pizza)
         {
-            using (PizzeriaContext context = new PizzeriaContext())
-            {
                 context.Pizzas.Add(pizza);
                 context.SaveChanges();
-            }
         }
 
         public void Delete(Pizza pizza)
@@ -47,6 +52,19 @@ namespace la_mia_pizzeria_static.Models.Repositories
             {
                 context.Update(pizza);
                 context.SaveChanges();
+            }
+        }
+
+        public List<Pizza> GetListByFilter(string search)
+        {
+            using (PizzeriaContext context = new PizzeriaContext())
+            {
+                IQueryable<Pizza> pizzas = context.Pizzas;
+                if (search != null)
+                {
+                    pizzas = pizzas.Where(pizza => pizza.Name.ToLower().Contains(search.ToLower()));
+                }
+                return pizzas.ToList();
             }
         }
     }

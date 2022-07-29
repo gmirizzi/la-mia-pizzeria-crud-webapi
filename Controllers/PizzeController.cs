@@ -1,5 +1,6 @@
 ﻿using la_mia_pizzeria_static.Models;
 using la_mia_pizzeria_static.Models.Repositories;
+using la_mia_pizzeria_static.Models.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,10 +9,10 @@ namespace la_mia_pizzeria_static.Controllers
     [Authorize]
     public class PizzeController : Controller
     {
-        private DbPizzaRepository pizzaRepository;
-        public PizzeController()
+        private IPizzaRepository pizzaRepository;
+        public PizzeController(IPizzaRepository _pizzaRepository)
         {
-            this.pizzaRepository = new DbPizzaRepository();
+            this.pizzaRepository = _pizzaRepository;
         }
         public IActionResult Index()
         {
@@ -52,17 +53,22 @@ namespace la_mia_pizzeria_static.Controllers
             }
             else
             {
-                PizzeriaContext db = new PizzeriaContext();
-                model.Pizza.IngredientsList = new List<Ingredient>();
-                foreach (string ingredientId in model.SelectedIngredients)
+                using (PizzeriaContext db = new PizzeriaContext())
                 {
-                    Ingredient ingredient = db.Ingredients.Find(int.Parse(ingredientId));
-                    model.Pizza.IngredientsList.Add(ingredient);
-                }
-                pizzaRepository.Create(model.Pizza);
-                db.SaveChanges();
+                    model.Pizza.IngredientsList = new List<Ingredient>();
+                    if (model.SelectedIngredients != null)
+                    {
+                        foreach (string ingredientId in model.SelectedIngredients)
+                        {
+                            Ingredient ingredient = db.Ingredients.Find(int.Parse(ingredientId));
+                            model.Pizza.IngredientsList.Add(ingredient);
+                        }
+                    }
+                    pizzaRepository = new DbPizzaRepository(db);
+                    pizzaRepository.Create(model.Pizza);
 
-                return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index));
+                }
             }
         }
 
@@ -119,10 +125,13 @@ namespace la_mia_pizzeria_static.Controllers
                         current.Price = model.Pizza.Price;
                         current.CategoryId = model.Pizza.CategoryId;
                         current.IngredientsList.Clear();
-                        foreach (string ingredientId in model.SelectedIngredients)
+                        if (model.SelectedIngredients != null)
                         {
-                            Ingredient ingredient = db.Ingredients.Find(int.Parse(ingredientId));
-                            current.IngredientsList.Add(ingredient);
+                            foreach (string ingredientId in model.SelectedIngredients)
+                            {
+                                Ingredient ingredient = db.Ingredients.Find(int.Parse(ingredientId));
+                                model.Pizza.IngredientsList.Add(ingredient);
+                            }
                         }
                         pizzaRepository.Update(current);
                         return RedirectToAction(nameof(Index));

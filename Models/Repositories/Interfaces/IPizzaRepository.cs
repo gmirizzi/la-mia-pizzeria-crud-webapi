@@ -7,5 +7,6 @@
         public void Create(Pizza pizza);
         public void Update(Pizza pizza);
         public void Delete(Pizza pizza);
+        public List<Pizza> GetListByFilter(string search);
     }
 }

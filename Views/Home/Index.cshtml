@@ -36,7 +36,7 @@
 	function search() {
 		row.innerHTML = "";
 		const inputValue = document.querySelector('input').value;
-		axios.get("/api/pizzas/getpizzas", { params: { searched: inputValue } })
+		axios.get("/api/pizzas/getpizzas", { params: { search: inputValue } })
 			.then(function(res) {
 				const arrPizzas = res.data;
 				arrPizzas.forEach((pizza) => {
