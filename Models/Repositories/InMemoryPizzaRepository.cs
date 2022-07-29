@@ -10,5 +10,21 @@
             InMemoryPizzaRepository.Pizzas.Add(pizza);
         }
 
+        public void Delete(Pizza pizza)
+        {
+            int indicePizzaDaEliminare = -1;
+            for (int i = 0; i < InMemoryPizzaRepository.Pizzas.Count; i++)
+            {
+                Pizza pizzaToCheck = InMemoryPizzaRepository.Pizzas[i];
+                if (pizzaToCheck.PizzaId == pizza.PizzaId)
+                {
+                    indicePizzaDaEliminare = i;
+                }
+            }
+            if (indicePizzaDaEliminare != -1)
+            {
+                InMemoryPizzaRepository.Pizzas.RemoveAt(indicePizzaDaEliminare);
+            }
+        }
     }
 }
