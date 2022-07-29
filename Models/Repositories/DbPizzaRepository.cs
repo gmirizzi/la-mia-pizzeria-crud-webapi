@@ -31,5 +31,14 @@ namespace la_mia_pizzeria_static.Models.Repositories
                 return pizzaFound;
             }
         }
+
+        public List<Pizza> GetList()
+        {
+            using (PizzeriaContext context = new PizzeriaContext())
+            {
+                IQueryable<Pizza> pizzas = context.Pizzas;
+                return pizzas.ToList();
+            }
+        }
     }
 }
