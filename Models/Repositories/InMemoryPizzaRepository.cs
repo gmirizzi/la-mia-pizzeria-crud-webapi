@@ -40,5 +40,10 @@
             }
             return pizzaDaTrovare;
         }
+
+        public List<Pizza> GetList()
+        {
+            return InMemoryPizzaRepository.Pizzas;
+        }
     }
 }
