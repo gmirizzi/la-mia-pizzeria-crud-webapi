@@ -45,5 +45,22 @@
         {
             return InMemoryPizzaRepository.Pizzas;
         }
+
+        public void Update(Pizza pizza)
+        {
+            int indicePizzaDaTrovare = -1;
+            for (int i = 0; i < InMemoryPizzaRepository.Pizzas.Count; i++)
+            {
+                Pizza pizzaToCheck = InMemoryPizzaRepository.Pizzas[i];
+                if (pizzaToCheck.PizzaId == pizza.PizzaId)
+                {
+                    indicePizzaDaTrovare = i;
+                }
+            }
+            if (indicePizzaDaTrovare != -1)
+            {
+                InMemoryPizzaRepository.Pizzas[indicePizzaDaTrovare] = pizza;
+            }
+        }
     }
 }
