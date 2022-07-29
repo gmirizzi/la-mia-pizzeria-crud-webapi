@@ -26,5 +26,19 @@
                 InMemoryPizzaRepository.Pizzas.RemoveAt(indicePizzaDaEliminare);
             }
         }
+
+        public Pizza GetById(int id)
+        {
+            Pizza pizzaDaTrovare = null;
+            for (int i = 0; i < InMemoryPizzaRepository.Pizzas.Count; i++)
+            {
+                Pizza pizzaToCheck = InMemoryPizzaRepository.Pizzas[i];
+                if (pizzaToCheck.PizzaId == id)
+                {
+                    pizzaDaTrovare = pizzaToCheck;
+                }
+            }
+            return pizzaDaTrovare;
+        }
     }
 }
